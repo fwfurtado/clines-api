@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: CLINES-API
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:clines}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
