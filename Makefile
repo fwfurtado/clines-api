@@ -26,10 +26,10 @@ deploy/production:
 	@ make _deploy APP=clines-api
 
 deploy/staging:
-	@ make _deploy APP=clines-api-staging TAG=$$TRAVIS_BUILD_ID
+	@ make _deploy APP=clines-api-staging
 
 _deploy: _docker-build-image _login-with-docker-registry
-	@ make _publish-docker-image APP=$(APP) VERSION=$(TAG)
+	@ make _publish-docker-image APP=$(APP) VERSION=$$TRAVIS_BUILD_ID
 	@ make _publish-docker-image APP=$(APP) VERSION=latest
 	@ make _release IMAGE_ID=$$(docker image inspect registry.heroku.com/$(APP)/web:latest -f {{.Id}} )
 
