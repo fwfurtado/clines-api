@@ -15,7 +15,7 @@ services:
       - "5005:5005"
     environment:
       DB_HOST: database
-      JVM_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 
 volumes:
   db-volume:

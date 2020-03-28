@@ -1,0 +1,40 @@
+cache:
+  directories:
+    - $HOME/.m2
+
+language: java
+
+services:
+  - docker
+
+stages:
+  - lint
+  - test
+  - deploy
+
+jobs:
+  include:
+    - stage: lint
+      name: "Linting the project"
+      script:
+        - make lint
+
+    - stage: test
+      name: "Testing Application"
+      services: postgresql
+      before_script:
+        - psql -c 'CREATE DATABASE clines;' -U postgres
+      script:
+        - make test
+
+    - stage: deploy
+      if: branch != master
+      name: "Deploy Application Staging"
+      script:
+        - make deploy/staging
+
+    - stage: deploy
+      if: branch = master
+      name: "Deploy Application Production"
+      script:
+        - make deploy/production

@@ -1,30 +1,57 @@
-APP_NAME = 'caelum/clines'
-VERSION ?= '0.0.0-SNAPSHOT'
-IMAGE_TAG = $(APP_NAME):$(VERSION)
+PROJECT_NAME = 'caelum/clines'
+JAR ?= ./target/clines-api-0.0.1-SNAPSHOT.jar
 
-_required/jar:
-ifndef jar
-	$(error "The 'jar' argument is required")
-endif
+.PHONY: package test lint run stop psql
 
-docker/run: docker/build
+package:
+	@ ./mvnw clean package -DskipTests
+
+test:
+	@ ./mvnw test
+
+lint:
+	@ ./mvnw validate
+
+run: _docker-build-image
 	@ docker-compose up -d
 
-docker/stop:
+stop:
 	@ docker-compose down -v
 
-docker/psql:
+psql:
 	@ docker-compose exec database psql -U postgres
 
-docker/build: _required/jar maven/package $(jar)
-	$(info building docker image...)
-	@ docker image build --build-arg JAR=$(jar) -t $(IMAGE_TAG) .
-	@ make docker/re-tag from=$(IMAGE_TAG) to=$(APP_NAME):latest
 
-docker/re-tag:
+deploy/production:
+	@ make _deploy APP=clines-api
+
+deploy/staging:
+	@ make _deploy APP=clines-api-staging TAG=$$TRAVIS_BUILD_ID
+
+_deploy: _docker-build-image _login-with-docker-registry
+	@ make _publish-docker-image APP=$(APP) VERSION=$(TAG)
+	@ make _publish-docker-image APP=$(APP) VERSION=latest
+	@ make _release IMAGE_ID=$$(docker image inspect registry.heroku.com/$(APP)/web:latest -f {{.Id}} )
+
+_docker-build-image: package $(JAR)
+	$(info building docker image...)
+	@ docker image build --build-arg JAR=$(JAR) -t $(PROJECT_NAME):latest .
+
+_login-with-docker-registry:
+	@ echo $$DOCKER_REGISTRY_PASS | docker login --username=_ --password-stdin registry.heroku.com
+
+_publish-docker-image:
+	@ make _docker-re-tag-image from=$(PROJECT_NAME):latest to=registry.heroku.com/$(APP)/web:$(VERSION)
+	@ docker image push registry.heroku.com/$(APP)/web:$(VERSION)
+
+_docker-re-tag-image:
 	$(info re-tag image from $(from) to $(to))
 	@ docker image tag $(from) $(to)
 
-
-maven/package:
-	@ ./mvnw clean package -DskipTests
+_release:
+	@ curl -X PATCH \
+			-H "Authorization: Bearer $$DOCKER_REGISTRY_PASS" \
+			-H "Content-Type: application/json" \
+			-H "Accept:application/vnd.heroku+json; version=3.docker-releases" \
+			-d '{ "updates": [{"type": "web",  "docker_image": "$(IMAGE_ID)"}] }' \
+			https://api.heroku.com/apps/clines-api-staging/formation

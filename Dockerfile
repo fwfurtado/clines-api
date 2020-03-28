@@ -6,6 +6,10 @@ WORKDIR /clines
 
 COPY ${JAR} /clines/app.jar
 
-ENV JVM_OPTS ''
+ENV JAVA_OPTS ''
 
-CMD java $JVM_OPTS -jar app.jar
+ENV PORT '8080'
+
+EXPOSE 8080
+
+CMD java $JAVA_OPTS -jar app.jar --server.port=$PORT
