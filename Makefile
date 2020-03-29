@@ -38,7 +38,7 @@ _docker-build-image: package $(JAR)
 	@ docker image build --build-arg JAR=$(JAR) -t $(PROJECT_NAME):latest .
 
 _login-with-docker-registry:
-	@ echo $$DOCKER_REGISTRY_PASS | docker login --username=_ --password-stdin registry.heroku.com
+	@ docker login --username=_ --password=$$DOCKER_REGISTRY_PASS registry.heroku.com
 
 _publish-docker-image:
 	@ make _docker-re-tag-image from=$(PROJECT_NAME):latest to=registry.heroku.com/$(APP)/web:$(VERSION)
