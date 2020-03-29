@@ -12,4 +12,4 @@ ENV PORT '8080'
 
 EXPOSE 8080
 
-CMD java $JAVA_OPTS -jar app.jar --server.port=$PORT
+CMD java -XX:+UseContainerSupport $JAVA_OPTS -jar app.jar --server.port=$PORT
