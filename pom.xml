@@ -86,7 +86,31 @@
                 <extensions>true</extensions>
                 <configuration>
                     <testFramework>JUNIT5</testFramework>
+
+                    <baseClassMappings>
+                        <baseClassMapping>
+                            <contractPackageRegex>.*aircraft</contractPackageRegex>
+                            <baseClassFQN>me.github.fwfurtado.clines.features.aircraft.AircraftContractTest</baseClassFQN>
+                        </baseClassMapping>
+                    </baseClassMappings>
+
+                    <basePackageForTests>${project.groupId}.clines</basePackageForTests>
+
                 </configuration>
+                <executions>
+
+                    <execution>
+                        <id>publish-to-repository</id>
+                        <configuration>
+                            <contractsRepositoryUrl>git:git@github.com:fwfurtado/clines-contract.git</contractsRepositoryUrl>
+                        </configuration>
+
+                        <phase>install</phase>
+                        <goals>
+                            <goal>pushStubsToScm</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

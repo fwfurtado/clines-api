@@ -12,6 +12,8 @@ stages:
   - test
   - deploy
 
+install: skip
+
 jobs:
   include:
     - stage: lint
