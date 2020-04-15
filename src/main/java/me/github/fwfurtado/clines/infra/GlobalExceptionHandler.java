@@ -2,6 +2,7 @@ package me.github.fwfurtado.clines.infra;
 
 import lombok.extern.slf4j.Slf4j;
 import me.github.fwfurtado.clines.exceptions.AircraftModelNotFoundException;
+import me.github.fwfurtado.clines.exceptions.LocationNotFoundException;
 import me.github.fwfurtado.clines.exceptions.ResourceAlreadyExistsException;
 import me.github.fwfurtado.clines.exceptions.ResourceNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -61,6 +62,19 @@ public class GlobalExceptionHandler {
                 .forEach(f -> errorView.addFieldError(f.getField(), f.getDefaultMessage()));
 
         log.info("[VALIDATION_ERROR] {}", errorView);
+
+        return errorView;
+    }
+
+    @ExceptionHandler(LocationNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ErrorView handle(LocationNotFoundException e) {
+        var message = e.getMessage();
+
+        log.info("[LOCATION_NOT_FOUND] {}", message);
+
+        var errorView = new ErrorView();
+        errorView.addGenericError(message);
 
         return errorView;
     }

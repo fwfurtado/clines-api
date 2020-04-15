@@ -10,6 +10,7 @@ services:
 stages:
   - lint
   - test
+  - contracts
   - deploy
 
 install: skip
@@ -28,7 +29,10 @@ jobs:
         - psql -c 'CREATE DATABASE clines;' -U postgres
       script:
         - make test
-
+    - stage: contracts
+      name: "Publish Contracts to Git"
+      script:
+        - make publish/contracts
     - stage: deploy
       if: branch != master
       name: "Deploy Application Staging"

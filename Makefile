@@ -1,5 +1,5 @@
 PROJECT_NAME = 'caelum/clines'
-JAR ?= ./target/clines-api-0.0.1-SNAPSHOT.jar
+JAR ?= ./target/clines-api-0.0.2-SNAPSHOT.jar
 
 .PHONY: package test lint run stop psql
 
@@ -11,6 +11,10 @@ test:
 
 lint:
 	@ ./mvnw validate
+
+publish/contracts:
+	@ ./mvnw versions:set -DnewVersion=$$TRAVIS_BUILD_ID
+	@ ./mvnw install -DskipTests
 
 run: _docker-build-image
 	@ docker-compose up -d

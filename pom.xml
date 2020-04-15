@@ -12,7 +12,7 @@
 
     <groupId>me.github.fwfurtado</groupId>
     <artifactId>clines-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>clines-api</name>
 
     <properties>
@@ -92,6 +92,10 @@
                             <contractPackageRegex>.*aircraft</contractPackageRegex>
                             <baseClassFQN>me.github.fwfurtado.clines.features.aircraft.AircraftContractTest</baseClassFQN>
                         </baseClassMapping>
+                        <baseClassMapping>
+                            <contractPackageRegex>.*airports</contractPackageRegex>
+                            <baseClassFQN>me.github.fwfurtado.clines.features.airports.AirportContractTest</baseClassFQN>
+                        </baseClassMapping>
                     </baseClassMappings>
 
                     <basePackageForTests>${project.groupId}.clines</basePackageForTests>
@@ -102,7 +106,9 @@
                     <execution>
                         <id>publish-to-repository</id>
                         <configuration>
-                            <contractsRepositoryUrl>git:git@github.com:fwfurtado/clines-contract.git</contractsRepositoryUrl>
+                            <contractsRepositoryUrl>git://https://github.com/fwfurtado/clines-contract.git</contractsRepositoryUrl>
+                            <contractsRepositoryUsername>${env.GITHUB_TOKEN}</contractsRepositoryUsername>
+                            <contractsRepositoryPassword>x-oauth-basic</contractsRepositoryPassword>
                         </configuration>
 
                         <phase>install</phase>

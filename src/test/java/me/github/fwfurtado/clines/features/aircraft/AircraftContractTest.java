@@ -1,20 +1,18 @@
 package me.github.fwfurtado.clines.features.aircraft;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import me.github.fwfurtado.clines.domain.Aircraft;
 import me.github.fwfurtado.clines.domain.AircraftModel;
-import me.github.fwfurtado.clines.infra.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 import java.util.Optional;
 
+import static me.github.fwfurtado.clines.utils.MockMvcFactory.configureMvcContextBy;
 import static org.mockito.BDDMockito.given;
 
 
@@ -45,10 +43,7 @@ public class AircraftContractTest {
 
     @BeforeEach
     void setup() {
-        var mvcBuilder = MockMvcBuilders.standaloneSetup(new AircraftController(service))
-                .setControllerAdvice(new GlobalExceptionHandler());
-
-        RestAssuredMockMvc.standaloneSetup(mvcBuilder);
+        configureMvcContextBy(new AircraftController(service));
 
         given(repository.findByCode("BX123AC")).willReturn(Optional.of(DEFAULT_AIRCRAFT));
         given(repository.findByCode("AX123AC")).willReturn(Optional.empty());
