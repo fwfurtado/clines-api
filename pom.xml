@@ -96,6 +96,10 @@
                             <contractPackageRegex>.*airports</contractPackageRegex>
                             <baseClassFQN>me.github.fwfurtado.clines.features.airports.AirportContractTest</baseClassFQN>
                         </baseClassMapping>
+                        <baseClassMapping>
+                            <contractPackageRegex>.*flights</contractPackageRegex>
+                            <baseClassFQN>me.github.fwfurtado.clines.features.flights.FlightContractTest</baseClassFQN>
+                        </baseClassMapping>
                     </baseClassMappings>
 
                     <basePackageForTests>${project.groupId}.clines</basePackageForTests>

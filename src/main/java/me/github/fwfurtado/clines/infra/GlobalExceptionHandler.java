@@ -5,6 +5,7 @@ import me.github.fwfurtado.clines.exceptions.AircraftModelNotFoundException;
 import me.github.fwfurtado.clines.exceptions.LocationNotFoundException;
 import me.github.fwfurtado.clines.exceptions.ResourceAlreadyExistsException;
 import me.github.fwfurtado.clines.exceptions.ResourceNotFoundException;
+import me.github.fwfurtado.clines.exceptions.ViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -75,6 +76,19 @@ public class GlobalExceptionHandler {
 
         var errorView = new ErrorView();
         errorView.addGenericError(message);
+
+        return errorView;
+    }
+
+    @ExceptionHandler(ViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ErrorView handle(ViolationException e) {
+        var errorView = new ErrorView();
+
+        e.getViolations()
+                .stream()
+                .map(Throwable::getMessage)
+                .forEach(errorView::addGenericError);
 
         return errorView;
     }
