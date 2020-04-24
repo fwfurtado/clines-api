@@ -63,6 +63,16 @@
             <artifactId>spring-cloud-starter-contract-verifier</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-pact</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -118,6 +128,35 @@
                         <phase>install</phase>
                         <goals>
                             <goal>pushStubsToScm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>convert-dsl-to-pact</id>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <classpathScope>test</classpathScope>
+                            <mainClass>
+                                org.springframework.cloud.contract.verifier.util.ToFileContractsTransformer
+                            </mainClass>
+                            <arguments>
+                                <argument>
+                                    org.springframework.cloud.contract.verifier.spec.pact.PactContractConverter
+                                </argument>
+                                <argument>${project.basedir}/target/pacts</argument>
+                                <argument>
+                                    ${project.basedir}/src/test/resources/contracts
+                                </argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>java</goal>
                         </goals>
                     </execution>
                 </executions>

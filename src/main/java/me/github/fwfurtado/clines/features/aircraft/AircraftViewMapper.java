@@ -10,6 +10,6 @@ public class AircraftViewMapper implements Mapper<Aircraft, AircraftView> {
     @Override
     public AircraftView map(Aircraft source) {
         var model = source.getModel();
-        return new AircraftView(source.getCode(), model.getDescription());
+        return new AircraftView(source.getCode(), model);
     }
 }

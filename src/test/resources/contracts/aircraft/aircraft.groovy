@@ -10,7 +10,10 @@ final DEFAULT_AIRCRAFT_MODEL = "Boeing 737"
 
 final DEFAULT_AIRCRAFT_RESULT = [
         "code" : EXISTING_AIRCRAFT_CODE,
-        "model": DEFAULT_AIRCRAFT_MODEL
+        "model": [
+                "description": DEFAULT_AIRCRAFT_MODEL,
+                "id"         : 1
+        ]
 ]
 
 [

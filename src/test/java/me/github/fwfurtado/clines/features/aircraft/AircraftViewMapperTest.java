@@ -19,6 +19,6 @@ class AircraftViewMapperTest {
         var aircraftView = mapper.map(aircraft);
 
         assertEquals(AIRCRAFT_CODE, aircraftView.getCode());
-        assertEquals(BOEING_836.getDescription(), aircraftView.getModel());
+        assertEquals(BOEING_836, aircraftView.getModel());
     }
 }

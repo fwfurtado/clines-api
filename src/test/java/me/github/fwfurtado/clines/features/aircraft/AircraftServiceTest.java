@@ -57,7 +57,7 @@ class AircraftServiceTest {
         then(modelService).shouldHaveNoInteractions();
 
         assertEquals(AIRCRAFT_CODE, aircraftView.getCode());
-        assertEquals(AIRCRAFT_MODEL.getDescription(), aircraftView.getModel());
+        assertEquals(AIRCRAFT_MODEL, aircraftView.getModel());
     }
 
     @Test
@@ -88,7 +88,7 @@ class AircraftServiceTest {
         var aircraftView = allAircraftViews.get(0);
 
         assertEquals(AIRCRAFT_CODE, aircraftView.getCode());
-        assertEquals(AIRCRAFT_MODEL.getDescription(), aircraftView.getModel());
+        assertEquals(AIRCRAFT_MODEL, aircraftView.getModel());
     }
 
     @Test

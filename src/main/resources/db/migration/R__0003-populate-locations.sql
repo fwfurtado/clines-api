@@ -1,3 +1,16 @@
 INSERT INTO locations(country, state, city)
     VALUES  ('BR', 'SP', 'Guarulhos'),
-            ('BR', 'SP', 'São Paulo');
+            ('BR', 'SP', 'São Paulo'),
+            ('BR', 'SP', 'Campinas'),
+            ('BR', 'RJ', 'Rio de Janeiro'),
+            ('BR', 'RJ', 'Galeão'),
+            ('BR', 'RS', 'Porto Alegre'),
+            ('BR', 'RN', 'Natal'),
+            ('BR', 'PE', 'Recife'),
+            ('BR', 'PR', 'Curitiba'),
+            ('BR', 'MG', 'Belo Horizonte'),
+            ('BR', 'MT', 'Cuibá'),
+            ('BR', 'CE', 'Fortaleza'),
+            ('BR', 'DF', 'Brasília'),
+            ('BR', 'BA', 'Salvador'),
+            ('BR', 'AM', 'Manaus');

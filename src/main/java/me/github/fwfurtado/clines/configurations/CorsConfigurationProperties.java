@@ -4,40 +4,48 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
-@Component
-@ConfigurationProperties(prefix = "cors.allowed")
 @Getter
 @Setter
+@ConfigurationProperties(prefix = "cors.allowed")
 public class CorsConfigurationProperties {
+    private static final List<String> PERMIT_ALL = List.of("*");
+
     private List<String> origins = List.of();
     private List<String> headers = List.of();
     private List<HttpMethod> methods = List.of(HttpMethod.HEAD, HttpMethod.GET);
     private boolean sendCredentials;
     private boolean allMethods;
-
-
-    public void setMethods(List<HttpMethod> methods) {
-        if (allMethods) {
-            this.methods = List.of(HttpMethod.values());
-            return;
-        }
-
-        this.methods = methods;
-    }
+    private boolean allHeaders;
 
     public String[] getOrigins() {
         return origins.toArray(String[]::new);
     }
 
     public String[] getHeaders() {
-        return headers.toArray(String[]::new);
+        return buildHeaderStream().toArray(String[]::new);
+    }
+
+    private Stream<String> buildHeaderStream() {
+        if (allHeaders) {
+            return PERMIT_ALL.stream();
+        }
+
+        return headers.stream();
     }
 
     public String[] getMethods() {
-        return methods.stream().map(HttpMethod::name).toArray(String[]::new);
+        return buildMethodStream().map(HttpMethod::name).toArray(String[]::new);
+    }
+
+    private Stream<HttpMethod> buildMethodStream() {
+        if (allMethods) {
+            return Arrays.stream(HttpMethod.values());
+        }
+        return methods.stream();
     }
 }

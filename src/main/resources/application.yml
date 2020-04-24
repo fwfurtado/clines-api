@@ -8,4 +8,7 @@ spring:
 
 cors:
   allowed:
-    host: ${CORS_HOST:http://localhost:3000}
+    origins: ${CORS_HOST:http://localhost:3000}
+    all-methods: true
+    all-headers: true
+    send-credentials: true
